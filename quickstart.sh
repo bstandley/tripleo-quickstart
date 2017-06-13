@@ -40,6 +40,20 @@ install_deps () {
         redhat-rpm-config
 }
 
+install_deps_debian () {
+    sudo apt-get install \
+        git \
+        virtualenv \
+        gcc \
+        libyaml-0-2 \
+        python-dev \
+        python-lxml \
+        python-selinux \
+        libffi-dev \
+        libssl-dev \
+        curl
+}
+
 
 print_logo () {
 
@@ -164,6 +178,11 @@ usage () {
     echo "Usage: $0 --install-deps"
     echo "                      install quickstart package dependencies and exit"
     echo ""
+    echo "Usage: $0 --install-deps-debian"
+    echo "                      install quickstart package dependencies on Debian-based"
+    echo "                      distribution when installing quickstart"
+    echo "                      package dependencies"
+    echo ""
     echo "Usage: $0 [options] <virthost>"
     echo ""
     echo "  virthost            a physical machine hosting the libvirt VMs of the TripleO"
@@ -231,6 +250,10 @@ while [ "x$1" != "x" ]; do
 
     case "$1" in
         --install-deps|-i)
+            OPT_INSTALL_DEPS=1
+            ;;
+
+        --install-deps-debian)
             OPT_INSTALL_DEPS=1
             ;;
 
@@ -426,6 +449,12 @@ fi
 if [ "$OPT_INSTALL_DEPS" = 1 ]; then
     echo "NOTICE: installing dependencies"
     install_deps
+    exit $?
+fi
+
+if [ "$OPT_INSTALL_DEPS_DEBIAN" = 1 ]; then
+    echo "NOTICE: installing dependencies"
+    install_deps_debian
     exit $?
 fi
 

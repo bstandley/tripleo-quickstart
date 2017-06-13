@@ -41,6 +41,7 @@
     name: "{{ non_root_user }}"
     state: present
     shell: /bin/bash
+    groups: "{{ 'kvm' if ansible_os_family == 'Debian' else '' }}"
   become: true
 
 - name: Get the non-root user UID
@@ -64,7 +65,7 @@
 
 - name: Ensure polkit packages are installed
   package:
-    name: "polkit"
+    name: "{{ 'policykit-1' if ansible_os_family == 'Debian' else 'polkit' }}"
     state: "present"
   become: true
 

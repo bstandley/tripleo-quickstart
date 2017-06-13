@@ -18,7 +18,7 @@
   package:
     name: "{{ item }}"
     state: present
-  with_items: "{{ libvirt_packages }}"
+  with_items: "{{ libvirt_packages_debian if ansible_os_family == 'Debian' else libvirt_packages }}"
   become: true
 
 - name: Start libvirtd

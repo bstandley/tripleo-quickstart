@@ -7,6 +7,14 @@ libvirt_packages:
   - python-lxml
   - polkit-pkla-compat
 
+# The (Debian) packages required to set up our desired libvirt environment.
+libvirt_packages_debian:
+  - qemu-kvm
+  - libvirt-clients
+  - python-libvirt
+  - libguestfs-tools
+  - python-lxml
+
 # The name of the libvirt service.
 libvirtd_service: libvirtd
 

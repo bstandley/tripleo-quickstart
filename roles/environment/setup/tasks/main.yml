@@ -91,6 +91,33 @@
 # connection, and we connect to the networks using the bridge names.
 #
 # [helper]: http://wiki.qemu.org/Features-Done/HelperNetworking
+
+- name: Ensure QEMU config directory exists
+  file:
+    path: "{{ qemu_bridge_conf | dirname }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  become: true
+
+- name: Ensure QEMU bridge.conf exists
+  copy:
+    content: ""
+    dest: "{{ qemu_bridge_conf }}"
+    force: no
+    owner: root
+    group: root
+    mode: 0644
+  become: true
+
+- name: setuid on qemu-bridge-helper so libvirt can bring up networks
+  file:
+    path: "{{ qemu_bridge_helper }}"
+    mode: "u+s"
+  when: qemu_bridge_helper is defined
+  become: true
+
 - name: Whitelist bridges for unprivileged access
   lineinfile:
     dest: "{{ qemu_bridge_conf }}"
